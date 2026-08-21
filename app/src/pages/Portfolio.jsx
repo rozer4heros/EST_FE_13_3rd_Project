@@ -27,10 +27,14 @@ export default function Portfolio() {
     };
   }, [dispatch, id]);
 
+  async function incrementPortfolioView() {
+    await supabase.rpc("increment_portfolio_view", { p_project_id: data.project_id });
+  }
+
   useEffect(() => {
     if (status !== "succeeded" || !data?.project_id) return;
 
-    supabase.rpc("increment_portfolio_view", { p_project_id: data.project_id });
+    incrementPortfolioView();
 
     if (data.author_id) {
       dispatch(fetchOtherPortfolios({ id, authorId: data.author_id }));
